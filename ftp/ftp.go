@@ -34,7 +34,7 @@ func (this *FtpProxy) handle(client net.Conn) {
 	}
 	proxy := NewProxy(client, originConn)
 	err = proxy.Work()
-	if err == nil {
+	if err != nil {
 		this.log.Info("proxy work was error: ", err)
 		return
 	}
