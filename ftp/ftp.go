@@ -27,6 +27,12 @@ func (this *FtpProxy) dialOrigin() (originConn net.Conn, err error) {
 }
 
 func (this *FtpProxy) handle(client net.Conn) {
+	defer func() {
+		if err := recover(); err != nil {
+			this.log.Printf("ftp proxy was panic: ", err)
+		}
+	}()
+
 	originConn, err := this.dialOrigin()
 	if err != nil {
 		this.log.Info("could't dial to origin server: ", err)
