@@ -44,7 +44,8 @@ func (o *OriginReader) Reading(callbackFunc OriginReadCallbackFunc) {
 						break
 					}
 					rawBuff.Write(line)
-					if bytes.HasSuffix(line, []byte("End\r\n")) {
+					if bytes.HasSuffix(line, []byte("End\r\n")) ||
+						bytes.HasSuffix(line, []byte("End of list\r\n")) {
 						break
 					}
 				}
