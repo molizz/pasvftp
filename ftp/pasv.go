@@ -86,9 +86,9 @@ func (p *PasvServer) Work() (err error) {
 }
 
 func (p *PasvServer) acceptClientPasvConn() (net.Conn, error) {
-	// addr := net.JoinHostPort("", p.proxyPasvPort)
+	addr := net.JoinHostPort("", p.proxyPasvPort)
 	var err error
-	l, err := net.Listen("tcp", p.proxyPasvAddr())
+	l, err := net.Listen("tcp", addr)
 	if err != nil {
 		return nil, err
 	}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"time"
 )
 
 const (
@@ -92,7 +91,6 @@ func (p *Proxy) buildOriginResult(result *OriginResult) {
 					fmt.Println("pasv server work was err: ", err)
 				}
 			}()
-			time.Sleep(300 * time.Millisecond)
 		}
 	case CodeQuit:
 		_ = p.origin.Close()
