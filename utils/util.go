@@ -14,6 +14,10 @@ func JoinHostPort(host string, port uint) string {
 
 var publicIp string
 
+func init() {
+	_, _ = PublicIp()
+}
+
 func PublicIp() (ip string, err error) {
 	if os.Getenv("ENV") == "dev" {
 		return "127.0.0.1", nil

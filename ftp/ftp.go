@@ -31,6 +31,7 @@ func (this *FtpProxy) handle(client net.Conn) {
 		if err := recover(); err != nil {
 			this.log.Printf("ftp proxy was panic: ", err)
 		}
+		_ = client.Close()
 	}()
 
 	originConn, err := this.dialOrigin()
@@ -38,6 +39,8 @@ func (this *FtpProxy) handle(client net.Conn) {
 		this.log.Info("could't dial to origin server: ", err)
 		return
 	}
+	defer originConn.Close()
+
 	proxy := NewProxy(client, originConn)
 	err = proxy.Work()
 	if err != nil {

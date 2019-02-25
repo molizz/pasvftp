@@ -2,10 +2,11 @@ package ftp
 
 import (
 	"fmt"
-	"github.com/molizz/bitproxy/utils"
 	"io"
 	"net"
 	"time"
+
+	"github.com/molizz/bitproxy/utils"
 )
 
 const (
@@ -63,11 +64,6 @@ func (p *PasvServer) Work() (err error) {
 		return err
 	}
 
-	err = p.dialOriginPasv()
-	if err != nil {
-		return err
-	}
-
 	defer func() {
 		if clientPasvConn != nil {
 			_ = clientPasvConn.Close()
@@ -76,6 +72,11 @@ func (p *PasvServer) Work() (err error) {
 			_ = p.originPasvConn.Close()
 		}
 	}()
+
+	err = p.dialOriginPasv()
+	if err != nil {
+		return err
+	}
 
 	_, _ = p.CopyFunc(clientPasvConn, p.originPasvConn)
 	_ = clientPasvConn.Close()
