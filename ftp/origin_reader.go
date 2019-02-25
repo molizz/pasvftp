@@ -20,11 +20,11 @@ func NewOriginReader(origin net.Conn) *OriginReader {
 }
 
 func (o *OriginReader) Reading(callbackFunc OriginReadCallbackFunc) {
-	client := bufio.NewReader(o.origin)
+	origin := bufio.NewReader(o.origin)
 
 	go func() {
 		for {
-			cmdRaw, err := client.ReadBytes('\n')
+			cmdRaw, err := origin.ReadBytes('\n')
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -39,7 +39,7 @@ func (o *OriginReader) Reading(callbackFunc OriginReadCallbackFunc) {
 				var rawBuff bytes.Buffer
 				rawBuff.Write(cmdRaw)
 				for {
-					line, err := client.ReadBytes('\n')
+					line, err := origin.ReadBytes('\n')
 					if err != nil {
 						break
 					}
