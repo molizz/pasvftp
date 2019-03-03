@@ -17,10 +17,10 @@ func parseCommand(raw []byte) (*ClientCommand, error) {
 	cmdRaw := strings.Split(rawString.String(), " ")
 	var p1, p2 string
 	if len(cmdRaw) >= 1 {
-		p1 = cmdRaw[0]
+		p1 = strings.TrimSpace(cmdRaw[0])
 	}
 	if len(cmdRaw) >= 2 {
-		p2 = cmdRaw[1]
+		p2 = strings.TrimSpace(cmdRaw[1])
 	}
 
 	result := &ClientCommand{

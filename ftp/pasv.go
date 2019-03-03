@@ -63,13 +63,9 @@ func (p *PasvServer) Work() (err error) {
 	if err != nil {
 		return err
 	}
-
 	defer func() {
 		if clientPasvConn != nil {
 			_ = clientPasvConn.Close()
-		}
-		if p.originPasvConn != nil {
-			_ = p.originPasvConn.Close()
 		}
 	}()
 
@@ -77,10 +73,13 @@ func (p *PasvServer) Work() (err error) {
 	if err != nil {
 		return err
 	}
+	defer func() {
+		if p.originPasvConn != nil {
+			_ = p.originPasvConn.Close()
+		}
+	}()
 
 	_, _ = p.CopyFunc(clientPasvConn, p.originPasvConn)
-	_ = clientPasvConn.Close()
-	_ = p.originPasvConn.Close()
 	fmt.Println("Pasv模式完成")
 	return nil
 }

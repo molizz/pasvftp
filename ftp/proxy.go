@@ -16,6 +16,7 @@ const (
 	CommandNLST = "NLST" // 从远程下载
 	CommandRETR = "RETR" // 从远程下载(文件)
 	CommandLIST = "LIST" // 从远处下载
+	CommandMLSD = "MLSD" // 从远处下载
 )
 
 const (
@@ -62,7 +63,7 @@ func (p *Proxy) commandStateFromClient(cmd *ClientCommand) {
 	switch cmd.Command {
 	case CommandSTOR:
 		p.pasvState = PasvStateUpload
-	case CommandLIST, CommandNLST, CommandRETR:
+	case CommandLIST, CommandNLST, CommandRETR, CommandMLSD:
 		p.pasvState = PasvStateDownload
 	default:
 		p.pasvState = PasvStateUnknow
