@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/molizz/bitproxy/utils"
+	"github.com/molizz/pasvftp/utils"
 )
 
 const (
