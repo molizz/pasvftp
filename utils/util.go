@@ -1,11 +1,12 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net"
+	"net/http"
 	"os"
-	"time"
 )
 
 func JoinHostPort(host string, port uint) string {
@@ -15,7 +16,11 @@ func JoinHostPort(host string, port uint) string {
 var publicIp string
 
 func init() {
-	_, _ = PublicIp()
+	var err error
+	publicIp, err = PublicIp()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func PublicIp() (ip string, err error) {
@@ -26,22 +31,22 @@ func PublicIp() (ip string, err error) {
 	if len(publicIp) > 0 {
 		return publicIp, nil
 	}
-	conn, err := net.DialTimeout("tcp", "ns1.dnspod.net:6666", 10*time.Second)
+
+	resp, err := http.Get("http://myexternalip.com/raw")
 	if err != nil {
 		return
 	}
-	defer func() {
-		conn.Close()
-	}()
-	err = conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+	defer resp.Body.Close()
+
+	buff, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
 	}
-	buff, err := ioutil.ReadAll(conn)
-	if err != nil {
-		return
+
+	IP := net.ParseIP(string(buff))
+	if IP == nil {
+		return "", errors.New("ip is involid:" + string(buff))
 	}
-	ip = string(buff)
-	publicIp = ip
+	ip = IP.String()
 	return
 }
