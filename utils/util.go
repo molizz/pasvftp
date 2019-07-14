@@ -38,6 +38,10 @@ func PublicIp() (ip string, err error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return "", errors.New("resp status is err:" + resp.Status)
+	}
+
 	buff, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
@@ -45,7 +49,7 @@ func PublicIp() (ip string, err error) {
 
 	IP := net.ParseIP(string(buff))
 	if IP == nil {
-		return "", errors.New("ip is involid:" + string(buff))
+		return "", errors.New("ip is invalid:" + string(buff))
 	}
 	ip = IP.String()
 	return
