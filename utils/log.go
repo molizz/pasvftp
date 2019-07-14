@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 )
@@ -13,6 +14,11 @@ type Logger struct {
 }
 
 var LogPath string
+
+func init() {
+	path, _ := exec.LookPath(os.Args[0])
+	LogPath = filepath.Dir(path)
+}
 
 func NewLogger(prefix string) *Logger {
 	filename := prefix + ".log"
